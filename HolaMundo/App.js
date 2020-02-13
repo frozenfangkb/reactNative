@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TextInput } from 'react-native';
 
 class Texto extends React.Component {
   render() {
@@ -9,12 +9,29 @@ class Texto extends React.Component {
   };
 }
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Texto textoToMostrar="Hi there!" />
-    </View>
-  );
+export default class App extends React.Component {
+
+  state = {
+    text: "",
+  };
+
+  handleChange = text => {
+    this.setState({ text });
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <Texto textoToMostrar="Hi there!" />
+        <TextInput 
+          placeholder="Tell me something"
+          onChangeText={this.handleChange}
+        />
+        <Texto textoToMostrar={this.state.text} />
+      </View>
+    );
+  }
+
 }
 
 const styles = StyleSheet.create({
