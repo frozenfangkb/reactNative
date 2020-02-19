@@ -1,43 +1,36 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Modal, Button } from 'react-native';
 
 export default class App extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.fetchUsers();
+  state = {
+    modalStatus: false
   }
 
-  state = {
-    loading: true,
-    users: [],
-  };
-
-  fetchUsers = async () => {
-    const response = await fetch('https://jsonplaceholder.typicode.com/users');
-    const pre = await response.json();
-    const users = pre.map( user => ({ ...user, key: String(user.id) }) );
-    this.setState({
-      loading: false,
-      users,
-    });
+  toggleModal = () => {
+    this.setState( prevState => {
+      return {
+        modalStatus: !prevState.modalStatus,
+      }
+    } );
   }
 
   render() {
-    const { loading, users } = this.state;
-
-    const loadingText = (<Text>Loading...</Text>);
-
-    const FlatListVar = (
-      <FlatList 
-        data={users}
-        renderItem={({ item }) => <Text>{item.name}</Text>}
-      />
-    );
 
     return (
       <View style={styles.container}>
-        {loading ? loadingText : FlatListVar}
+        <Modal visible={this.state.modalStatus}>
+          <View style={styles.container}>
+            <Button 
+              title="Cerrar modal"
+              onPress={this.toggleModal}
+            />
+          </View>
+        </Modal>
+        <Button
+          title="Abrir modal"
+          onPress={this.toggleModal}
+        />
       </View>
     );
   }
